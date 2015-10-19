@@ -1,0 +1,5 @@
+wwwroot/built/*
+wwwroot/built/*/*
+wwwroot/public/js/built/*
+wwwroot/public/js/built/*/*
+node_modules

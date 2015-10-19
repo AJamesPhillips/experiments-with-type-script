@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "noImplicitAny": true,
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "sourceMap": true,
+        "rootDir": "src",
+        "target": "ES5",
+		"module": "amd",
+        "outDir": "./wwwroot/public/js/built"
+    }
+}

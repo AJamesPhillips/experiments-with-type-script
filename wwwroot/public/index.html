@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+	<head>
+		<script type="text/javascript" src="./js/vendor/jquery_1.7.2.js"></script>
+		<script type="text/javascript" src="./js/vendor/underscore_1.7.0.js"></script>
+		<script type="text/javascript" src="./js/vendor/d3_3.5.5.js"></script>
+		<script type="text/javascript" src="./js/requirejs_bootstrap.js"></script>
+		<script type="text/javascript" src="./js/vendor/requirejs.js" data-main="app.js"></script>
+		<link href="./css/style.css" rel="stylesheet"></link>
+	</head>
+	<body>
+		<div>
+			<select id="algoSelect"></select> Status: <span id="status" class="stopped">Stopped</span>
+			<div>
+				<b> Description </b>
+				<div id="description"></div>
+			</div>
+			<div>
+				<b> Parameters </b>
+				<table id="parameters"><tbody></tbody></table>
+			</div>
+			<div>
+				<b>Controls</b><br>
+				Spacebar begins / pauses the algorithm.<br>
+				r key <u>r</u>estarts.<br>
+				f key <u>f</u>ully restarts and, where applicable, creates new random inputs (Refreshing page also restarts).<br>
+				<b>Speed</b>
+				<input id="speedControl" type="range">
+				<span id="speedOut"></span> ms between reactions.
+			</div>
+
+		</div>
+	</body>
+</html>

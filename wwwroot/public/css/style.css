@@ -1,0 +1,43 @@
+.space .group .point_circle {
+	stroke: rgb(0, 0, 0);
+	stroke-width: 2px;
+}
+
+.space .point .point_circle {
+	stroke: rgb(221, 0, 51);
+}
+
+.space .group0 {
+	fill: rgba(51, 0, 221, 0.5);
+}
+
+.space .group1 {
+	fill: rgba(0, 181, 51, 0.5);
+}
+
+.space .group2 {
+	fill: rgba(160, 1, 50, 0.5);
+}
+
+.space g text {
+	stroke: rgb(0, 0, 0);
+}
+
+
+#parameters {
+  border-collapse: collapse;
+}
+#parameters td {
+	border: thin solid rgb(150, 150, 150);
+	padding: 0px 4px;
+}
+
+#status {
+	padding: 1px 3px;
+	border: thin solid rgb(165, 161, 161);
+	background-color: rgb(0, 158, 0);
+	border-radius: 3px;
+}
+#status.stopped {
+	background-color: rgb(250, 0, 0);
+}
