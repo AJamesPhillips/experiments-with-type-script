@@ -1,15 +1,7 @@
 
 
-class IterationResult {
+interface IterationResult {
   finished: boolean;
-  maxChange: number;
-  timeUntilNextStep: number;
-
-  constructor(finished: boolean, maxChange?: number, timeUntilNextStep?: number) {
-    this.finished = finished;
-    this.maxChange = maxChange;
-    this.timeUntilNextStep = timeUntilNextStep;
-  }
 }
 
 
@@ -17,10 +9,8 @@ class Algorithm {
   protected iterationResult: IterationResult;
 
   public iterate(): IterationResult {
-    if(!this.iterationResult || this.iterationResult.maxChange > 1) {
+    if(!this.iterationResult || !this.iterationResult.finished) {
       this.iterationResult = this._iterate();
-    } else {
-      this.iterationResult = new IterationResult(true);
     }
     return this.iterationResult;
   }

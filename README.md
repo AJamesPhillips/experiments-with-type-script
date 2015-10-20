@@ -2,6 +2,10 @@
 
 ## Development
 
+### Dependcies
+
+    $ npm install -g typescript
+
 ### Compile
 
     $ tsc -w

@@ -6,7 +6,7 @@
         "sourceMap": true,
         "rootDir": "src",
         "target": "ES5",
-		"module": "amd",
+        "module": "amd",
         "outDir": "./wwwroot/public/js/built"
     }
 }

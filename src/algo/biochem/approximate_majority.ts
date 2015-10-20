@@ -1,11 +1,9 @@
 import {
   Algorithm,
-  Parameters,
-  IterationResult,
-  NewStatusResult,
 } from '../algorithm';
 import {
-  Gillespie,
+  BoundedGillespie,
+  GillespieIterationResult,
 } from './gillespie';
 import {
   Entity,
@@ -13,6 +11,7 @@ import {
 } from './utils';
 
 
+// TODO Rewrite as factory around BoundedGillespie
 class ApproximateMajority extends Algorithm {
   name = 'Approximate Majority biological consensus (Bounded Gillespie)';
   description = ('Simulates how biology might find which chemical entity is in the ' +
@@ -33,7 +32,7 @@ class ApproximateMajority extends Algorithm {
   numberOfStartingC: number = 0;
   reactionRate: number = 1e-5;
 
-  private gillespie: Gillespie;
+  private gillespie: BoundedGillespie;
 
   constructor(numberOfStartingA: number, numberOfStartingB: number, minTimeUntilNextReaction: number, maxTimeUntilNextReaction: number) {
     super();
@@ -56,12 +55,11 @@ class ApproximateMajority extends Algorithm {
     // Hack.  Timings to allow animations to complete successfully and visual UI state
     // to match algo data state before running next iteration but also proceed reasonably quickly.
     // TODO remove.  Perhaps replace with Algorithm being a generator.
-    this.gillespie = new Gillespie({
+    this.gillespie = new BoundedGillespie({
       reactions,
       minTimeUntilNextReaction,
       maxTimeUntilNextReaction,
     });
-    this.gillespie.addObserver(this);
   }
 
   get reactions(): Reaction[] {
@@ -72,19 +70,10 @@ class ApproximateMajority extends Algorithm {
     ];
   }
 
-  iterate() { // TODONEXT
-    this.gillespie.run();
-  }
-
-  event(event: IterationResult): void;
-  event(event: NewStatusResult): void;
-  event(event: any): void {
-    if(event instanceof IterationResult) {
-      // pass
-    } else if(event instanceof NewStatusResult) {
-      // pass on the algorithm's NewStatusResult
-      this.informObservers(event);
-    }
+  // Could write an `_iterate` but would then have to cast return value
+  // from `super.iterate()`.
+  public iterate(): GillespieIterationResult {
+    return this.gillespie.iterate();
   }
 
   destroy() {
