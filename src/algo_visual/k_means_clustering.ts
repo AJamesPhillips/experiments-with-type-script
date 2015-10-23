@@ -1,13 +1,11 @@
 import {
-  Parameters,
-  AlgorithmEvent,
   IterationResult,
-  NewStatusResult,
 } from '../algo/algorithm';
 import {
   KMeans,
 } from '../algo/k_means_clustering';
 import {
+  Parameters,
   AlgoVisualiser,
   AbstractAlgoVisualiser,
 } from './algo_visual';
@@ -92,7 +90,7 @@ class KMeansVisualiser extends AbstractAlgoVisualiser implements AlgoVisualiser 
     this.initialVisualise();
 
     this.algo = new KMeans(this.points, this.groups);
-    this.algo.addObserver(this);
+    return this.algo;
   }
 
   initialVisualise() {
@@ -103,19 +101,8 @@ class KMeansVisualiser extends AbstractAlgoVisualiser implements AlgoVisualiser 
   }
 
   updateCanvas() {
-    this.canvas.updatePoints();
-    this.canvas.updatePoints('.group');
-  }
-
-  event(event: IterationResult): void;
-  event(event: NewStatusResult): void;
-  event(event: AlgorithmEvent): void {
-    if(event instanceof IterationResult) {
-      this.updateCanvas();
-    } else if(event instanceof NewStatusResult) {
-      // pass on the algorithm's NewStatusResult
-      this.informObservers(event);
-    }
+    this.canvas.updatePoints(this.animationDuration);
+    this.canvas.updatePoints(this.animationDuration, '.group');
   }
 
   protected _restart() {
