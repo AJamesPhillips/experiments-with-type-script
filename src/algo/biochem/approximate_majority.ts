@@ -23,13 +23,10 @@ class ApproximateMajority extends Algorithm {
     'whose probabilty of producing the correct answer will increase as the difference ' +
     'between the two starting populations of A and B increases.');
 
-  entityA: Entity;
-  entityB: Entity;
-  entityC: Entity;
-  reactionABtoC2: Reaction;
-  reactionACtoA2: Reaction;
-  reactionBCtoB2: Reaction;
-
+  private _reactions: Reaction[];
+  public entityA: Entity;
+  public entityB: Entity;
+  public entityC: Entity;
   numberOfStartingA: number;
   numberOfStartingB: number;
   numberOfStartingC: number = 0;
@@ -46,24 +43,20 @@ class ApproximateMajority extends Algorithm {
     this.entityA = new Entity('A', this.numberOfStartingA);
     this.entityB = new Entity('B', this.numberOfStartingB);
     this.entityC = new Entity('C', this.numberOfStartingC);
-    this.reactionABtoC2 = new Reaction(this.entityA, this.entityB, this.entityC, this.reactionRate);
-    this.reactionACtoA2 = new Reaction(this.entityA, this.entityC, this.entityA, this.reactionRate);
-    this.reactionBCtoB2 = new Reaction(this.entityB, this.entityC, this.entityB, this.reactionRate);
-    var reactions = [
-      this.reactionABtoC2,
-      this.reactionACtoA2,
-      this.reactionBCtoB2,
+    var reactionABtoC2 = new Reaction(this.entityA, this.entityB, this.entityC, this.reactionRate);
+    var reactionACtoA2 = new Reaction(this.entityA, this.entityC, this.entityA, this.reactionRate);
+    var reactionBCtoB2 = new Reaction(this.entityB, this.entityC, this.entityB, this.reactionRate);
+    this._reactions = [
+      reactionABtoC2,
+      reactionACtoA2,
+      reactionBCtoB2,
     ];
 
-    this.gillespie = new BoundedGillespie({reactions});
+    this.gillespie = new BoundedGillespie({reactions: this.reactions});
   }
 
   get reactions(): Reaction[] {
-    return [
-      this.reactionABtoC2,
-      this.reactionACtoA2,
-      this.reactionBCtoB2,
-    ];
+    return _.clone(this._reactions);
   }
 
   // Could write an `_iterate` but would then have to
@@ -78,10 +71,8 @@ class ApproximateMajority extends Algorithm {
     this.entityA = undefined;
     this.entityB = undefined;
     this.entityC = undefined;
-    this.reactionABtoC2 = undefined;
-    this.reactionACtoA2 = undefined;
-    this.reactionBCtoB2 = undefined;
 
+    this._reactions = [];
     this.gillespie.destroy();
     super.destroy();
   }
