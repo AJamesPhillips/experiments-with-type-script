@@ -57,13 +57,11 @@ class KMeans extends Algorithm {
   protected _iterate(): IterationResult {
     var {maxChange} = findDistanceAndAssignPointsToGroups(this.pointsData, this.groupsData);
     var iterationResult = {
-      finished: false,
-      maxChange: 0,
+      finished: (maxChange < 1),
+      maxChange,
       timeUntilNextStep: 0,
     };
     return iterationResult;
-    // this.informObservers(iterationEvent);
-    // this.iterateAgain(maxChange);
   }
 }
 

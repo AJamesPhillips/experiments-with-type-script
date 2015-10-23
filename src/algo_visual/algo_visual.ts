@@ -71,6 +71,7 @@ class AbstractAlgoVisualiser extends SubjectBase {
 
   setup(args: any = {}): boolean {
     if(!this.algo) {
+      this._finished = false;
       this.algo = this._setup(args);
       return true;
     }
@@ -140,11 +141,11 @@ class AbstractAlgoVisualiser extends SubjectBase {
     throw new Error('Subclasses must implement "_restart"');
   }
 
-  protected _destroy() {
+  protected _destroy(): void {
     throw new Error('Subclasses must implement "_destroy"');
   }
 
-  protected _visualClearup() {
+  protected _visualClearup(): void {
     throw new Error('Subclasses must implement "_visualClearup"');
   }
 }

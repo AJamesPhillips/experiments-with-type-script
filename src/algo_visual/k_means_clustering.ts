@@ -58,6 +58,7 @@ class KMeansVisualiser extends AbstractAlgoVisualiser implements AlgoVisualiser 
     args.groups = args.groups || [];
     args.points = args.points || [];
 
+    // Make new randomly placed groups or clone existing groups
     if(args.groups.length) {
       this.groups = args.groups.map((g) => g.clone());
     } else {
@@ -74,6 +75,7 @@ class KMeansVisualiser extends AbstractAlgoVisualiser implements AlgoVisualiser 
       randomiseCoords(this.groups, rndCoord);
     }
 
+    // Make new randomly placed points or clone existing points
     if(args.points.length) {
       this.points = args.points.map((p) => p.clone());
     } else {
@@ -83,7 +85,7 @@ class KMeansVisualiser extends AbstractAlgoVisualiser implements AlgoVisualiser 
       randomiseCoords(this.points, rndCoord);
     }
 
-    // Now copy groups and points so we can restarted if needed.
+    // Copy groups and points so we can restarted if needed.
     this.initialGroups = this.groups.map((g) => g.clone());
     this.initialPoints = this.points.map((p) => p.clone());
 
@@ -105,13 +107,18 @@ class KMeansVisualiser extends AbstractAlgoVisualiser implements AlgoVisualiser 
     this.canvas.updatePoints(this.animationDuration, '.group');
   }
 
-  protected _restart() {
-    this.destroy();
-    this.setup({groups: this.initialGroups, points: this.initialPoints});
-    return true;
+  protected _iterate(): number {
+    var result = this.algo.iterate();
+    this.updateCanvas();
+    return result.finished ? undefined : this.animationDuration * 2;
   }
 
-  protected _destroy() {
+  protected _restart(): void {
+    this.destroy();
+    this.setup({groups: this.initialGroups, points: this.initialPoints});
+  }
+
+  protected _destroy(): void {
     // TODO figure out if there are any circular references we need to remove to aid GC
     this.points.forEach((p) => p.destroy());
     this.points = [];
@@ -119,7 +126,7 @@ class KMeansVisualiser extends AbstractAlgoVisualiser implements AlgoVisualiser 
     this.groups = [];
   }
 
-  protected _visualClearup() {
+  protected _visualClearup(): void {
     this.canvas.removePoints('.group');
   }
 }
