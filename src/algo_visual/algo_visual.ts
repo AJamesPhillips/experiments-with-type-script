@@ -17,6 +17,7 @@ interface NewStatusEvent extends EventResult {
 interface Parameters {
   key: string;
   value: toStringInterface;
+  cssClass?: string;
 }
 
 
@@ -66,6 +67,10 @@ class AbstractAlgoVisualiser extends SubjectBase {
       finished: this._finished,
     };
     this.informObservers(event);
+  }
+
+  informObservers(event: NewStatusEvent) {
+    return super.informObservers(event);
   }
 
   setup(args: any = {}): boolean {

@@ -7,16 +7,28 @@
 	stroke: rgb(221, 0, 51);
 }
 
-.space .group0 {
+.group0 {
 	fill: rgba(51, 0, 221, 0.5);
+  background-color: rgba(51, 0, 221, 0.5);
+}
+path.line.entity_line_0 {
+  stroke: rgba(51, 0, 221, 0.5);
 }
 
-.space .group1 {
+.group1 {
 	fill: rgba(0, 181, 51, 0.5);
+  background-color: rgba(0, 181, 51, 0.5);
+}
+path.line.entity_line_1 {
+  stroke: rgba(0, 181, 51, 0.5);
 }
 
-.space .group2 {
+.group2 {
 	fill: rgba(160, 1, 50, 0.5);
+  background-color: rgba(160, 1, 50, 0.5);
+}
+path.line.entity_line_2 {
+  stroke: rgba(160, 1, 50, 0.5);
 }
 
 .space g text {
@@ -40,4 +52,28 @@
 }
 #status.stopped {
 	background-color: rgb(250, 0, 0);
+}
+
+/* Graphs */
+path.line {
+  fill: none;
+  stroke: #666;
+  stroke-width: 1.5px;
+}
+
+.x.axis line {
+  stroke: #fff;
+}
+
+.x.axis .minor {
+  stroke-opacity: .5;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.y.axis line, .y.axis path {
+  fill: none;
+  stroke: #000;
 }

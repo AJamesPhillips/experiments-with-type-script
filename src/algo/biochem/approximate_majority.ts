@@ -27,6 +27,7 @@ class ApproximateMajority extends Algorithm {
   public entityA: Entity;
   public entityB: Entity;
   public entityC: Entity;
+  private _entities: Entity[];
   numberOfStartingA: number;
   numberOfStartingB: number;
   numberOfStartingC: number = 0;
@@ -43,6 +44,7 @@ class ApproximateMajority extends Algorithm {
     this.entityA = new Entity('A', this.numberOfStartingA);
     this.entityB = new Entity('B', this.numberOfStartingB);
     this.entityC = new Entity('C', this.numberOfStartingC);
+    this._entities = [this.entityA, this.entityB, this.entityC];
     var reactionABtoC2 = new Reaction(this.entityA, this.entityB, this.entityC, this.reactionRate);
     var reactionACtoA2 = new Reaction(this.entityA, this.entityC, this.entityA, this.reactionRate);
     var reactionBCtoB2 = new Reaction(this.entityB, this.entityC, this.entityB, this.reactionRate);
@@ -57,6 +59,15 @@ class ApproximateMajority extends Algorithm {
 
   get reactions(): Reaction[] {
     return _.clone(this._reactions);
+  }
+
+  get entities(): Entity[] {
+    return _.clone(this._entities);
+  }
+
+  get maxEntities(): number {
+    // Assumes all *reactions* obey the law of conservation of mass
+    return this.numberOfStartingA + this.numberOfStartingB + this.numberOfStartingC;
   }
 
   // Could write an `_iterate` but would then have to

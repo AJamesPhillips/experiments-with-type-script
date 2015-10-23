@@ -23,8 +23,12 @@ var numberOfStartingA = 30;
 var numberOfStartingB = 28;
 var approximateMajority = new ApproximateMajorityVisualiser(canvas, size, dataPointRadius, numberOfStartingA, numberOfStartingB);
 algoVisualisers.push(approximateMajority);
-var multipleApproximateMajority = new ApproximateMajorityMultipleVisualiser(canvas, size, dataPointRadius, numberOfStartingA, numberOfStartingB, 1000);
+
+var runsToComplete = 250;
+var maxIterationsPerRun = 500;
+var multipleApproximateMajority = new ApproximateMajorityMultipleVisualiser(canvas, size, dataPointRadius, numberOfStartingA, numberOfStartingB, runsToComplete, maxIterationsPerRun);
 algoVisualisers.push(multipleApproximateMajority);
+
 var kMeans = new KMeansVisualiser(canvas, size, dataPointRadius);
 algoVisualisers.push(kMeans);
 
@@ -69,7 +73,7 @@ algoVisualisers.forEach((algoVisual, i) => {
   $('#algoSelect').append(`<option value="${i}">${algoVisual.name}</option>`);
 });
 $('#algoSelect')
-  .prop('selectedIndex', 0)
+  .prop('selectedIndex', 1)
   .on('change', (event: JQueryEventObject) => {
     var index = parseInt($(event.target).val(), 10);
     if(algoVisual) algoVisual.destroy();
@@ -78,7 +82,7 @@ $('#algoSelect')
     algoVisual.addObserver(algoChangeStateObserver);
     $('#description').text(algoVisual.description);
     var parameters = algoVisual.parametersForHuman.map((param) => {
-      return `<tr><td>${param.key}</td><td>${param.value.toString()}</td></tr>`;
+      return `<tr><td>${param.key}</td><td>${param.value.toString()}</td><td class="${param.cssClass}">&nbsp; &nbsp;</td></tr>`;
     }).join('');
     $('#parameters').html(parameters);
     $('#algoSelect').blur();  // lose focus
