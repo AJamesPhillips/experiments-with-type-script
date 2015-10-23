@@ -8,6 +8,7 @@ import {
 
 
 var nextEntityId = 0;
+var nextReactionId = 0;
 
 
 class Entity {
@@ -31,12 +32,7 @@ class Entity {
 
   set count(val: number) {
     is0OrGreaterInteger(val, true);
-    // var event: EntityChangeEvent = {
-    //   oldCount: this._count,
-    //   newCount: val,
-    // };
     this._count = val;
-    // this.informObservers(event);
   }
 
   toString(): string {
@@ -45,24 +41,32 @@ class Entity {
 }
 
 
+type ReactedEntityChange = {entity: Entity, change: number};
+
 interface ReactionEvent extends EventResult {
-  removals: {entity: Entity, change: number}[];
-  creations: {entity: Entity, change: number}[];
+  removals: ReactedEntityChange[];
+  creations: ReactedEntityChange[];
 }
 
 
-class Reaction extends SubjectBase {
-  entity1: Entity;
-  entity2: Entity;
-  endEntity: Entity;  // assumes 2 of this entity is produced
-  rateConstant: number;
+class Reaction {
+  private _id: number;
+  private entity1: Entity;
+  private entity2: Entity;
+  private endEntity: Entity;  // assumes 2 of this entity is produced
+  private rateConstant: number;
+  public lastReactionEvent: ReactionEvent;
 
   constructor(entity1: Entity, entity2: Entity, endEntity: Entity, rateConstant: number) {
-    super();
     this.entity1 = entity1;
     this.entity2 = entity2;
     this.endEntity = endEntity;
     this.rateConstant = rateConstant;
+    this._id = nextReactionId++;
+  }
+
+  get id() {
+    return this._id;
   }
 
   get entities(): Entity[] {
@@ -81,7 +85,7 @@ class Reaction extends SubjectBase {
     this.entity1.count -= 1;
     this.entity2.count -= 1;
     this.endEntity.count += 2;
-    var event: ReactionEvent = {
+    this.lastReactionEvent = {
       removals: [
         {entity: this.entity1, change: -1},
         {entity: this.entity2, change: -1},
@@ -90,7 +94,6 @@ class Reaction extends SubjectBase {
         {entity: this.endEntity, change: +2},
       ]
     };
-    this.informObservers(event);
   }
 }
 
@@ -108,6 +111,7 @@ export {
 	Entity,
 	Reaction,
   ReactionEvent,
+  ReactedEntityChange,
 	allPropensities,
   sumPropensities,
 }

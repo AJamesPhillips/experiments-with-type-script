@@ -22,7 +22,6 @@ class BoundedGillespie extends Algorithm {
   /*
    * If minTimeUntilNextReaction and maxTimeUntilNextReaction are undefined then it is unbounded.
    */
-
   private reactions: Reaction[];
   private minTimeUntilNextReaction: number;
   private maxTimeUntilNextReaction: number;
