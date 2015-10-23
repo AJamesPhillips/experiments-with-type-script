@@ -58,10 +58,7 @@ class ApproximateMajorityVisualiser extends AbstractAlgoVisualiser implements Al
   }
 
   protected _setup() {
-    // Hack.  Timings to allow animations to complete successfully and visual UI state
-    // to match algo data state before running next iteration but also proceed reasonably quickly.
-		// TODO refactor so that these animationDurations stay up to date with the speed selected by the user.
-    var algo = new ApproximateMajority(this.numberOfStartingA, this.numberOfStartingB, this.animationDuration * 3, this.animationDuration * 4);
+    var algo = new ApproximateMajority(this.numberOfStartingA, this.numberOfStartingB);
     this.algo = algo;
 
     // Set up the visualisation
@@ -144,11 +141,14 @@ class ApproximateMajorityVisualiser extends AbstractAlgoVisualiser implements Al
       // the reaction location before continuing their animation
       }, animationDuration * 2);
     }
-    this.lastResult = this.algo.iterate();
-    // debugger
-    var timeUntilNextStep = this.lastResult.timeUntilNextStep;
-    // Ensure that by `timeUntilNextStep` ms the animation for the UI has completed
-    timeUntilNextStep = Math.max(timeUntilNextStep, animationDuration * 3);
+
+    // Timings to allow animations to complete successfully and visual UI state
+    // to match algo data state before running next iteration but also proceed reasonably quickly.
+    var args = {
+      minTimeUntilNextReaction: animationDuration * 3,
+      maxTimeUntilNextReaction: animationDuration * 4,
+    }
+    this.lastResult = this.algo.iterate(args);
     return this.lastResult.timeUntilNextStep;
   }
 
