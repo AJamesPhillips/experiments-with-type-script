@@ -1,4 +1,3 @@
-import {timings} from '../algo_visual/timings';
 import {
   SubjectBase,
   EventResult,
@@ -8,6 +7,7 @@ import {
   Entity,
   Reaction,
   ReactionEvent,
+  ReactedEntityChange,
 } from '../algo/biochem/utils';
 import {
   AssignedPoint,
@@ -30,17 +30,12 @@ class EntityUI extends GridArrangedGroup {
 }
 
 
-interface ReactionUIEvent extends EventResult {
-}
-
-
-class ReactionUI extends SubjectBase implements Observer {
-  reaction: Reaction;
-  entityUIs: EntityUI[];
-  reactionEntityToUI: {[index: number]: EntityUI};
+class ReactionUI {
+  private reaction: Reaction;
+  private entityUIs: EntityUI[];
+  private reactionEntityToUI: {[index: number]: EntityUI};
 
   constructor(reaction: Reaction, entityUIs: EntityUI[]) {
-    super();
     this.reaction = reaction;
     this.entityUIs = entityUIs;
     this.reactionEntityToUI = {};
@@ -56,48 +51,46 @@ class ReactionUI extends SubjectBase implements Observer {
       }
       this.reactionEntityToUI[entity.id] = matchingEntityUIs[0];
     });
-    this.reaction.addObserver(this);
   }
 
-  event(event: ReactionEvent) {
-    var consumedAssignedEntityPoints: AssignedPoint[] = [];
-    event.removals.map((removed) => {
+  removePoints(removals: ReactedEntityChange[]): AssignedPoint[] {
+    var removedAssignedPoints: AssignedPoint[] = [];
+    removals.map((removed) => {
       var entityUI = this.reactionEntityToUI[removed.entity.id];
       var i = -removed.change;
       while(i > 0) {
-        consumedAssignedEntityPoints.push(entityUI.removeLastPoint());
+        removedAssignedPoints.push(entityUI.removeLastPoint());
         --i;
       }
       entityUI.distributePoints();
     });
 
     // Move points to reaction area and update visuals
-    consumedAssignedEntityPoints.map((point, i) => {
+    removedAssignedPoints.map((point, i) => {
       // TODO refactor to generalise
       point.x = 250;
       point.y = 20 + (30 * i);
     });
-    this.informObservers({});
 
-    // Complete reaction by moving points to reaction area and update visuals
-    setTimeout(() => {
-      event.creations.map((created) => {
-        var entityUI = this.reactionEntityToUI[created.entity.id];
-        var i = created.change;
-        while(i > 0) {
-          if(!consumedAssignedEntityPoints.length) throw new Error('Trying to create more entities than destroyed.');
-          entityUI.addPoint(consumedAssignedEntityPoints.pop());
-          --i;
-        }
-        if(consumedAssignedEntityPoints.length) throw new Error('More entities destroyed than recreated.');
-        this.informObservers({});
-      });
-    }, timings.animationTime()*2);
+    return removedAssignedPoints;
+  }
+
+  // Complete reaction by assigning points to created entities
+  reassignPoints(availableAssignedPoints: AssignedPoint[], creations: ReactedEntityChange[]): void {
+    creations.map((created) => {
+      var entityUI = this.reactionEntityToUI[created.entity.id];
+      var i = created.change;
+      while(i > 0) {
+        if(!availableAssignedPoints.length) throw new Error('Trying to reassign more points than initially removed.');
+        entityUI.addPoint(availableAssignedPoints.pop());
+        --i;
+      }
+      if(availableAssignedPoints.length) throw new Error('More entities removed than reassigned.');
+    });
   }
 }
 
 export {
 	EntityUI,
 	ReactionUI,
-  ReactionUIEvent,
 }
