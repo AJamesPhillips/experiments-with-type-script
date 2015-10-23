@@ -4,8 +4,15 @@ import {Algorithm} from '../algo/algorithm';
 import {
   Observer,
   SubjectBase,
+  EventResult,
 } from '../utils/events';
 import {toStringInterface} from '../utils/utils';
+
+
+interface NewStatusEvent extends EventResult {
+	running: boolean;
+	finished: boolean;
+}
 
 
 interface Parameters {
@@ -53,6 +60,15 @@ class AbstractAlgoVisualiser extends SubjectBase {
 		return this._running;
 	}
 
+	set running(val: boolean) {
+		this._running = val;
+		var event: NewStatusEvent = {
+			running: this.running,
+			finished: this._finished,
+		};
+		this.informObservers(event);
+	}
+
 	setup(args: any = {}): boolean {
 		if(!this.algo) {
 			this.algo = this._setup(args);
@@ -62,9 +78,9 @@ class AbstractAlgoVisualiser extends SubjectBase {
 	}
 
 	run(): boolean {
-		if(this._running || this._finished) return false;
+		if(this.running || this._finished) return false;
 		this.setup();
-		this._running = true;
+		this.running = true;
 		this.iterateHandler();
 		return true;
 	}
@@ -80,15 +96,15 @@ class AbstractAlgoVisualiser extends SubjectBase {
   }
 
 	stop(): boolean {
-		if(!this.algo || !this._running) return false;
-		this._running = false;
+		if(!this.algo || !this.running) return false;
+		this.running = false;
 		window.clearTimeout(this.nextIterationToken);
 		this.nextIterationToken = undefined;
 		return true;
 	}
 
 	restart(): boolean {
-		if(!this.algo || !this._running) return false;
+		if(!this.algo || !this.running) return false;
 		this.stop();
 		this._restart();
 		return true;
@@ -146,5 +162,6 @@ export {
 	Parameters,
 	AlgoVisualiser,
 	AbstractAlgoVisualiser,
+	NewStatusEvent,
 	fullRestart,
 }

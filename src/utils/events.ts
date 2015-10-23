@@ -1,7 +1,7 @@
 /// <reference path="../../typings/underscore/underscore.d.ts" />
 
 
-class EventResult {}
+interface EventResult {}
 
 
 interface Observer {
