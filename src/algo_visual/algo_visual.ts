@@ -1,3 +1,4 @@
+import {timings} from './timings';
 import {Drawing} from '../data_visual/canvas';
 import {Algorithm} from '../algo/algorithm';
 import {
@@ -27,47 +28,69 @@ interface AlgoVisualiser extends SubjectBase {
 
 
 class AbstractAlgoVisualiser extends SubjectBase {
-	name: string = 'Need to set Algorithm name';
-	description: string = 'Need to set Algorithm description';
-	canvas: Drawing;
-	size: number;
-	dataPointRadius: number;
-	algo: Algorithm;
+	protected canvas: Drawing;
+	protected size: number;
+	protected dataPointRadius: number;
+	protected algo: Algorithm;
+	private _running: boolean;
+	private _finished: boolean;
+	private nextIterationToken: number;
 
 	constructor(canvas: Drawing, size: number, dataPointRadius: number) {
 		super();
 		this.canvas = canvas;
 		this.size = size;
 		this.dataPointRadius = dataPointRadius;
+		this.iterateHandler = this.iterateHandler.bind(this);
+	}
+
+  protected get animationDuration() {
+    return timings.animationTime();
+  }
+
+	get running(): boolean {
+		if(!this.algo) return false;
+		return this._running;
 	}
 
 	setup(args: any = {}): boolean {
 		if(!this.algo) {
-			this._setup(args);
+			this.algo = this._setup(args);
 			return true;
 		}
 		return false;
 	}
 
-	protected _setup(args: any) {}
-
 	run(): boolean {
+		if(this._running || this._finished) return false;
 		this.setup();
-		return this.algo.run();
+		this._running = true;
+		this.iterateHandler();
+		return true;
 	}
 
+  private iterateHandler(): void {
+    var delay: number = this._iterate();
+    if(delay !== undefined) {
+      this.nextIterationToken = setTimeout(this.iterateHandler, delay);
+    } else {
+      this._finished = true;
+      this.stop();
+    }
+  }
+
 	stop(): boolean {
-		if(!this.algo) return false;
-		return this.algo.stop();
+		if(!this.algo || !this._running) return false;
+		this._running = false;
+		window.clearTimeout(this.nextIterationToken);
+		this.nextIterationToken = undefined;
+		return true;
 	}
 
 	restart(): boolean {
-		if(!this.algo) return false;
-		this.algo.stop();
-		return this._restart();
-	}
-
-	protected _restart(): boolean {
+		if(!this.algo || !this._running) return false;
+		this.stop();
+		this._restart();
 		return true;
 	}
 
@@ -81,19 +104,33 @@ class AbstractAlgoVisualiser extends SubjectBase {
 		return false;
 	}
 
-	protected _destroy() {}
-
-	get running(): boolean {
-		if(!this.algo) return false;
-		return this.algo.running;
-	}
-
   protected visualClearup() {
     this.canvas.removePoints();
 		this._visualClearup();
   }
 
-	protected _visualClearup() {}
+	protected _setup(args: any): Algorithm {
+		throw new Error('Subclasses must implement "_setup"');
+	}
+
+  /*
+   * Time to run in milliseconds when the `_iterate` function should be called again.
+   */
+  protected _iterate(): number {
+    throw new Error('Subclasses must implement "_iterate"');
+  }
+
+	protected _restart(): void {
+		throw new Error('Subclasses must implement "_restart"');
+	}
+
+	protected _destroy() {
+		throw new Error('Subclasses must implement "_destroy"');
+	}
+
+	protected _visualClearup() {
+		throw new Error('Subclasses must implement "_visualClearup"');
+	}
 }
 
 
@@ -106,6 +143,7 @@ var fullRestart = (algoVisual: AlgoVisualiser) => {
 
 
 export {
+	Parameters,
 	AlgoVisualiser,
 	AbstractAlgoVisualiser,
 	fullRestart,
