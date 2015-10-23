@@ -5,6 +5,12 @@ var isInteger = function(num: number, loud: boolean = false): boolean {
   return isInt;
 }
 
+var is0OrGreater = function(num: number, loud: boolean = false): boolean {
+  var is0OrMore = num >= 0;
+  if(!is0OrMore && loud) throw new Error(`Not >= 0: ${num}`);
+  return is0OrMore;
+}
+
 var isPositiveInteger = function(num: number, loud: boolean = false): boolean {
   var isPosInt = isInteger(num, false) && num > 0;
   if(!isPosInt && loud) throw new Error(`Not positive integer: ${num}`);
@@ -12,50 +18,10 @@ var isPositiveInteger = function(num: number, loud: boolean = false): boolean {
 }
 
 var is0OrGreaterInteger = function(num: number, loud: boolean = false): boolean {
-  var is0OrMoreInt = isInteger(num, false) && num >= 0;
+  var is0OrMoreInt = isInteger(num, false) && is0OrGreater(num, false);
   if(!is0OrMoreInt && loud) throw new Error(`Not integer >= 0: ${num}`);
   return is0OrMoreInt;
 }
-
-
-// // #######################################################################
-// //+ TODO refactor to use a library function (e.g. from underscore / lodash)
-
-// var contains = function(list: any[], item: any): boolean {
-//   return !!~list.indexOf(item);
-// };
-
-
-// var unique = function(list: any[]): any {
-//   var newList: any[] = [];
-//   for(var i = 0; i < list.length; ++i) {
-//     var element = list[i];
-//     if(!~newList.indexOf(element)) {
-//       newList.push(element);
-//     }
-//   }
-//   return newList;
-// };
-
-
-// var remove = function(list: any[], item: any): any {
-//   if(~list.indexOf(item)) {
-//     var index = list.indexOf(item);
-//     list.splice(index, 1);
-//     return item;
-//   }
-//   return undefined;
-// };
-
-
-// var _ = {
-//   contains,
-//   unique,
-//   remove,
-// };
-// //- TODO refactor to use a library function (e.g. from underscore / lodash)
-// // #######################################################################
-
 
 var capitalizeFirstLetter = (val: string) => {
   return val.charAt(0).toUpperCase() + val.slice(1);
@@ -69,6 +35,7 @@ interface toStringInterface {
 
 export {
   isInteger,
+  is0OrGreater,
   isPositiveInteger,
   is0OrGreaterInteger,
   capitalizeFirstLetter,

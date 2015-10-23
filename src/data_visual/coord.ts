@@ -1,6 +1,6 @@
 
 import {
-  isPositiveInteger,
+  is0OrGreater,
 } from '../utils/utils';
 
 
@@ -15,8 +15,8 @@ class Coord implements PointInterface {
   y: number;
 
   constructor(x: number, y: number) {
-    isPositiveInteger(x, true);
-    isPositiveInteger(y, true);
+    is0OrGreater(x, true);
+    is0OrGreater(y, true);
     this.x = x;
     this.y = y;
   }
@@ -72,9 +72,8 @@ var randomiseCoords = function(coords: Coord[], rnd: {(): number;}) {
 var generateRndCoords = function(nummberOfCoords: number, rnd: {(): number;}) {
   var coords: Coord[] = [];
   for (var i = 0; i < nummberOfCoords; ++i) {
-    coords.push(new Coord(0, 0));
+    coords.push(new Coord(rnd(), rnd()));
   }
-  randomiseCoords(coords, rnd);
   return coords;
 }
 

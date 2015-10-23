@@ -5,7 +5,8 @@
 
 import {makeSvgDrawArea} from './data_visual/canvas';
 import {AlgoVisualiser, NewStatusEvent, fullRestart} from './algo_visual/algo_visual';
-import {ApproximateMajorityVisualiser} from './algo_visual/approximate_majority_bio_consensus';
+import {ApproximateMajorityVisualiser} from './algo_visual/approximate_majority';
+import {ApproximateMajorityMultipleVisualiser} from './algo_visual/approximate_majority_multiple';
 import {KMeansVisualiser} from './algo_visual/k_means_clustering';
 import {timings} from './algo_visual/timings';
 import {capitalizeFirstLetter} from './utils/utils';
@@ -22,6 +23,8 @@ var numberOfStartingA = 30;
 var numberOfStartingB = 28;
 var approximateMajority = new ApproximateMajorityVisualiser(canvas, size, dataPointRadius, numberOfStartingA, numberOfStartingB);
 algoVisualisers.push(approximateMajority);
+var multipleApproximateMajority = new ApproximateMajorityMultipleVisualiser(canvas, size, dataPointRadius, numberOfStartingA, numberOfStartingB, 1000);
+algoVisualisers.push(multipleApproximateMajority);
 var kMeans = new KMeansVisualiser(canvas, size, dataPointRadius);
 algoVisualisers.push(kMeans);
 

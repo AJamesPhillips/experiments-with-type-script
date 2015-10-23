@@ -9,9 +9,6 @@ import {
   GroupWithMean,
 } from '../data_visual/group';
 import {
-  randomiseCoords,
-} from '../data_visual/coord';
-import {
   bounded,
 } from '../utils/random';
 
@@ -60,14 +57,13 @@ class KMeansVisualiser extends AbstractAlgoVisualiser implements AlgoVisualiser 
       for(var i = 0; i < this.numberOfGroups; ++i) {
         this.groups.push(new GroupWithMean({
           label: String.fromCharCode(65 + i),
-          x: 0,
-          y: 0,
+          x: rndCoord(),
+          y: rndCoord(),
           radiusOfGroupLabel,
           groupCssClass,
           groupId: i,
         }));
       }
-      randomiseCoords(this.groups, rndCoord);
     }
 
     // Make new randomly placed points or clone existing points
@@ -75,9 +71,8 @@ class KMeansVisualiser extends AbstractAlgoVisualiser implements AlgoVisualiser 
       this.points = args.points.map((p) => p.clone());
     } else {
       for(var i = 0; i < this.numberOfDataPoints; ++i) {
-        this.points.push(new AssignedPoint(0, 0, 'point', 10));
+        this.points.push(new AssignedPoint(rndCoord(), rndCoord(), 'point', 10));
       }
-      randomiseCoords(this.points, rndCoord);
     }
 
     // Copy groups and points so we can restarted if needed.
@@ -114,7 +109,6 @@ class KMeansVisualiser extends AbstractAlgoVisualiser implements AlgoVisualiser 
   }
 
   protected _destroy(): void {
-    // TODO figure out if there are any circular references we need to remove to aid GC
     this.points.forEach((p) => p.destroy());
     this.points = [];
     this.groups.forEach((g) => g.destroy());

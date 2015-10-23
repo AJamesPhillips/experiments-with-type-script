@@ -13,8 +13,8 @@ var VERY_SMALL = 1e-10;
 
 
 interface GillespieIterationParameters {
-  minTimeUntilNextReaction: number;
-  maxTimeUntilNextReaction: number;
+  minTimeUntilNextReaction?: number;
+  maxTimeUntilNextReaction?: number;
 }
 
 
