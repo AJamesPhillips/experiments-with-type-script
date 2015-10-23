@@ -12,6 +12,12 @@ import {
 var VERY_SMALL = 1e-10;
 
 
+interface GillespieIterationParameters {
+  minTimeUntilNextReaction: number;
+  maxTimeUntilNextReaction: number;
+}
+
+
 interface GillespieIterationResult extends IterationResult {
   timeUntilNextStep: number;
   reaction: Reaction;
@@ -23,22 +29,18 @@ class BoundedGillespie extends Algorithm {
    * If minTimeUntilNextReaction and maxTimeUntilNextReaction are undefined then it is unbounded.
    */
   private reactions: Reaction[];
-  private minTimeUntilNextReaction: number;
-  private maxTimeUntilNextReaction: number;
   protected iterationResult: GillespieIterationResult;
 
-  constructor(args: {reactions: Reaction[], minTimeUntilNextReaction: number, maxTimeUntilNextReaction: number}) {
+  constructor(args: {reactions: Reaction[]}) {
     super();
     this.reactions = args.reactions;
-    this.minTimeUntilNextReaction = args.minTimeUntilNextReaction;
-    this.maxTimeUntilNextReaction = args.maxTimeUntilNextReaction;
   }
 
-  public iterate(): GillespieIterationResult {
-    return <GillespieIterationResult> super.iterate();
+  public iterate(args: GillespieIterationParameters): GillespieIterationResult {
+    return <GillespieIterationResult> super.iterate(args);
   }
 
-  protected _iterate(): GillespieIterationResult {
+  protected _iterate(args: GillespieIterationParameters): GillespieIterationResult {
     var finished = true;
     var timeUntilNextStep: number;
     var reaction: Reaction;
@@ -52,11 +54,11 @@ class BoundedGillespie extends Algorithm {
       // Stochastically model `timeUntilNextStep`
       var randomPt = Math.random() + VERY_SMALL;
       timeUntilNextStep = (1/totalPropensities) * Math.log(1/randomPt);
-      if(this.minTimeUntilNextReaction !== undefined) {
-        timeUntilNextStep = Math.max(this.minTimeUntilNextReaction, timeUntilNextStep);
+      if(args.minTimeUntilNextReaction !== undefined) {
+        timeUntilNextStep = Math.max(args.minTimeUntilNextReaction, timeUntilNextStep);
       }
-      if(this.maxTimeUntilNextReaction !== undefined) {
-        timeUntilNextStep = Math.min(this.maxTimeUntilNextReaction, timeUntilNextStep);
+      if(args.maxTimeUntilNextReaction !== undefined) {
+        timeUntilNextStep = Math.min(args.maxTimeUntilNextReaction, timeUntilNextStep);
       }
 
       // Stochastically model which reaction occured
@@ -71,7 +73,6 @@ class BoundedGillespie extends Algorithm {
       reaction.react(1);
     }
     this.iterationResult = {finished, timeUntilNextStep, reaction};
-    // console.log('Gillespie iteration:', this.iterationResult);
     return this.iterationResult;
   }
 
@@ -84,5 +85,6 @@ class BoundedGillespie extends Algorithm {
 
 export {
   BoundedGillespie,
-  GillespieIterationResult
+  GillespieIterationParameters,
+  GillespieIterationResult,
 }
