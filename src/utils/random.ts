@@ -5,9 +5,9 @@
  * @param upperBound exclusive
  */
 var bounded = function(lowerBound: number, upperBound: number) {
-	return Math.random() * (upperBound - lowerBound) + lowerBound;
+  return Math.random() * (upperBound - lowerBound) + lowerBound;
 }
 
 export {
-	bounded,
+  bounded,
 }

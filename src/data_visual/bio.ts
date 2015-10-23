@@ -1,9 +1,4 @@
 import {
-  SubjectBase,
-  EventResult,
-  Observer,
-} from '../utils/events';
-import {
   Entity,
   Reaction,
   ReactionEvent,
@@ -91,6 +86,6 @@ class ReactionUI {
 }
 
 export {
-	EntityUI,
-	ReactionUI,
+  EntityUI,
+  ReactionUI,
 }

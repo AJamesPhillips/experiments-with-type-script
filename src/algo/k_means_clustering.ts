@@ -6,8 +6,8 @@ import {
   euclideanDistance as distance,
 } from '../data_visual/coord';
 import {
-	AssignedPoint,
-	GroupWithMean,
+  AssignedPoint,
+  GroupWithMean,
 } from '../data_visual/group';
 
 

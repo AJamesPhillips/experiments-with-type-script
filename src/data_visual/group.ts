@@ -1,11 +1,11 @@
 import {
-	isPositiveInteger,
+  isPositiveInteger,
 } from '../utils/utils';
 import {
-	PointInterface,
+  PointInterface,
   IsDrawable,
-	ColoredCoord,
-	euclideanDistance,
+  ColoredCoord,
+  euclideanDistance,
 } from './coord';
 
 

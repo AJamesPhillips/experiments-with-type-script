@@ -80,9 +80,9 @@ var generateRndCoords = function(nummberOfCoords: number, rnd: {(): number;}) {
 export {
   PointInterface,
   IsDrawable,
-	Coord,
+  Coord,
   ColoredCoord,
   euclideanDistance,
   randomiseCoords,
-	generateRndCoords,
+  generateRndCoords,
 };

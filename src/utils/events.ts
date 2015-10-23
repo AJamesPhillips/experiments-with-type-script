@@ -41,8 +41,8 @@ class SubjectBase implements Subject {
 
 
 export {
-	EventResult,
-	Observer,
-	Subject,
-	SubjectBase,
+  EventResult,
+  Observer,
+  Subject,
+  SubjectBase,
 }

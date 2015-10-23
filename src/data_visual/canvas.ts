@@ -57,15 +57,15 @@ class Drawing {
 
 
 var makeSvgDrawArea = function(size: number): Drawing {
-	var svg = d3.select("body").append("svg")
+  var svg = d3.select("body").append("svg")
     .attr("width", size)
     .attr("height", size)
     .attr("class", "space");
-	return new Drawing(svg);
+  return new Drawing(svg);
 };
 
 
 export {
-	makeSvgDrawArea,
+  makeSvgDrawArea,
   Drawing
 };

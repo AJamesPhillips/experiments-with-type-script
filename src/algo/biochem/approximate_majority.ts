@@ -67,7 +67,7 @@ class ApproximateMajority extends Algorithm {
   }
 
   // Could write an `_iterate` but would then have to
-	// subclass `iterate`, call `super.iterate()` and cast return value
+  // subclass `iterate`, call `super.iterate()` and cast return value
   // from `super.iterate()`.
   public iterate(args: ApproximateMajorityIterationParameters): GillespieIterationResult {
     return this.gillespie.iterate(args);
@@ -89,6 +89,6 @@ class ApproximateMajority extends Algorithm {
 
 
 export {
-	ApproximateMajority,
-	ApproximateMajorityIterationParameters,
+  ApproximateMajority,
+  ApproximateMajorityIterationParameters,
 }

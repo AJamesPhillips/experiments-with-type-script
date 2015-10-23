@@ -108,10 +108,10 @@ var sumPropensities = (reactions: Reaction[]): number => {
 
 
 export {
-	Entity,
-	Reaction,
+  Entity,
+  Reaction,
   ReactionEvent,
   ReactedEntityChange,
-	allPropensities,
+  allPropensities,
   sumPropensities,
 }

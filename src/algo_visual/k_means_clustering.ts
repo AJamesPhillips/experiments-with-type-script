@@ -126,5 +126,5 @@ class KMeansVisualiser extends AbstractAlgoVisualiser implements AlgoVisualiser 
 
 
 export {
-	KMeansVisualiser
+  KMeansVisualiser
 }
