@@ -3,6 +3,7 @@ import {
 } from '../algorithm';
 import {
   BoundedGillespie,
+  GillespieIterationParameters,
   GillespieIterationResult,
 } from './gillespie';
 import {
@@ -11,7 +12,9 @@ import {
 } from './utils';
 
 
-// TODO Rewrite as factory around BoundedGillespie
+interface ApproximateMajorityIterationParameters extends GillespieIterationParameters {}
+
+
 class ApproximateMajority extends Algorithm {
   name = 'Approximate Majority biological consensus (Bounded Gillespie)';
   description = ('Simulates how biology might find which chemical entity is in the ' +
@@ -34,7 +37,7 @@ class ApproximateMajority extends Algorithm {
 
   private gillespie: BoundedGillespie;
 
-  constructor(numberOfStartingA: number, numberOfStartingB: number, minTimeUntilNextReaction: number, maxTimeUntilNextReaction: number) {
+  constructor(numberOfStartingA: number, numberOfStartingB: number) {
     super();
     this.numberOfStartingA = numberOfStartingA;
     this.numberOfStartingB = numberOfStartingB;
@@ -52,14 +55,7 @@ class ApproximateMajority extends Algorithm {
       this.reactionBCtoB2,
     ];
 
-    // Hack.  Timings to allow animations to complete successfully and visual UI state
-    // to match algo data state before running next iteration but also proceed reasonably quickly.
-    // TODO remove.  Perhaps replace with Algorithm being a generator.
-    this.gillespie = new BoundedGillespie({
-      reactions,
-      minTimeUntilNextReaction,
-      maxTimeUntilNextReaction,
-    });
+    this.gillespie = new BoundedGillespie({reactions});
   }
 
   get reactions(): Reaction[] {
@@ -70,10 +66,11 @@ class ApproximateMajority extends Algorithm {
     ];
   }
 
-  // Could write an `_iterate` but would then have to cast return value
+  // Could write an `_iterate` but would then have to
+	// subclass `iterate`, call `super.iterate()` and cast return value
   // from `super.iterate()`.
-  public iterate(): GillespieIterationResult {
-    return this.gillespie.iterate();
+  public iterate(args: ApproximateMajorityIterationParameters): GillespieIterationResult {
+    return this.gillespie.iterate(args);
   }
 
   destroy() {
@@ -92,5 +89,6 @@ class ApproximateMajority extends Algorithm {
 
 
 export {
-	ApproximateMajority
+	ApproximateMajority,
+	ApproximateMajorityIterationParameters,
 }
