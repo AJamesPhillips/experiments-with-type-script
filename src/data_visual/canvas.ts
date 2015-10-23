@@ -1,6 +1,5 @@
 /// <reference path="../../typings/tsd.d.ts" />
 
-import {timings} from '../algo_visual/timings';
 import {IsDrawable} from '../data_visual/coord';
 import {Group} from '../data_visual/group';
 
@@ -36,7 +35,7 @@ class Drawing {
         .text((d) => d.label);
   }
 
-  updatePoints(cssSelector: string = '.point'): void {
+  updatePoints(animationDuration: number, cssSelector: string = '.point'): void {
     var points = <d3.Selection<IsDrawable>> this.svg.selectAll(cssSelector);
 
     // update existing
@@ -46,7 +45,7 @@ class Drawing {
       .attr('class', (d) => d.cssClass)
       .transition()
         .attr('transform', translatePoint)
-        .duration(timings.animationTime());
+        .duration(animationDuration);
     // Move to correct index value
     points.sort((a: IsDrawable, b: IsDrawable) => a.index < b.index ? -1 : 1);
   }
