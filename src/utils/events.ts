@@ -23,7 +23,8 @@ class SubjectBase implements Subject {
   }
 
   removeObserver(observer: Observer) {
-    this.observers = _.reject(this.observers, (o) => o === observer);
+    // TODO can we remove the cast?
+    this.observers = <Observer[]> _.reject(this.observers, (o) => o === observer);
   }
 
   protected informObservers(eventResult: EventResult) {

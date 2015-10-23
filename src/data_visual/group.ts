@@ -64,7 +64,8 @@ class Group {
 
   removePoint(point: AssignedPoint): AssignedPoint {
     // TODO OPTIMISE, replace this.coordsInCluster with a `set` to avoid this call to _.partition.
-    var [removedPoints, points] = _.partition(this.coordsInCluster, (p) => p === point);
+    // TODO can we remove the cast?
+    var [removedPoints, points] = <[AssignedPoint[], AssignedPoint[]]> _.partition(this.coordsInCluster, (p) => p === point);
     this.coordsInCluster = points;
     // Sanity check
     if(removedPoints.length !== 1) throw new Error(`Have removed "${removedPoints.length}" points like "${point}" but expected 1.`);
