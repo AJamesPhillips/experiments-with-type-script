@@ -4,11 +4,10 @@
 /// <reference path="../typings/d3/d3.d.ts" />
 
 import {makeSvgDrawArea} from './data_visual/canvas';
-import {AlgoVisualiser, fullRestart} from './algo_visual/algo_visual';
+import {AlgoVisualiser, NewStatusEvent, fullRestart} from './algo_visual/algo_visual';
 import {ApproximateMajorityVisualiser} from './algo_visual/approximate_majority_bio_consensus';
 import {KMeansVisualiser} from './algo_visual/k_means_clustering';
 import {timings} from './algo_visual/timings';
-import {NewStatusResult} from './algo/algorithm';
 import {capitalizeFirstLetter} from './utils/utils';
 
 
@@ -21,8 +20,8 @@ var algoVisualisers: AlgoVisualiser[] = [];
 var algoVisual: AlgoVisualiser;
 var numberOfStartingA = 30;
 var numberOfStartingB = 28;
-var gillespie = new ApproximateMajorityVisualiser(canvas, size, dataPointRadius, numberOfStartingA, numberOfStartingB);
-algoVisualisers.push(gillespie);
+var approximateMajority = new ApproximateMajorityVisualiser(canvas, size, dataPointRadius, numberOfStartingA, numberOfStartingB);
+algoVisualisers.push(approximateMajority);
 var kMeans = new KMeansVisualiser(canvas, size, dataPointRadius);
 algoVisualisers.push(kMeans);
 
@@ -54,7 +53,7 @@ $('body').on('keydown', function(event) {
 
 
 var algoChangeStateObserver = {
-  event: (event: NewStatusResult) => {
+  event: (event: NewStatusEvent) => {
     var $el = $('#status');
     var val = event.running ? 'running' : 'stopped';
     $el.prop('class', val).text(capitalizeFirstLetter(val));
