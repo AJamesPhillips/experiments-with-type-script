@@ -14,6 +14,10 @@ import {
 
 interface ApproximateMajorityIterationParameters extends GillespieIterationParameters {}
 
+interface ApproximateMajorityIterationResult extends GillespieIterationResult {
+  correct: boolean;
+}
+
 
 class ApproximateMajority extends Algorithm {
   name = 'Approximate Majority biological consensus (Bounded Gillespie)';
@@ -73,8 +77,15 @@ class ApproximateMajority extends Algorithm {
   // Could write an `_iterate` but would then have to
   // subclass `iterate`, call `super.iterate()` and cast return value
   // from `super.iterate()`.
-  public iterate(args: ApproximateMajorityIterationParameters): GillespieIterationResult {
-    return this.gillespie.iterate(args);
+  public iterate(args: ApproximateMajorityIterationParameters): ApproximateMajorityIterationResult {
+    var result = this.gillespie.iterate(args);
+    var correct: boolean;
+    if(result.finished) {
+      var initiallyGreater = this.numberOfStartingA > this.numberOfStartingB;
+      var foundGreater = this.entityA.count > this.entityB.count;
+      correct = (initiallyGreater === foundGreater) && (this.numberOfStartingA !== this.numberOfStartingB);
+    }
+    return _.extend({correct}, result);
   }
 
   destroy() {
@@ -93,4 +104,5 @@ class ApproximateMajority extends Algorithm {
 export {
   ApproximateMajority,
   ApproximateMajorityIterationParameters,
+  ApproximateMajorityIterationResult,
 }

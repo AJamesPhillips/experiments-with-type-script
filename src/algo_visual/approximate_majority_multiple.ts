@@ -17,6 +17,13 @@ import {
 import {Drawing} from '../data_visual/canvas';
 
 
+interface OutcomeData {
+  correct: number;
+  incorrect: number;
+  incomplete: number;
+}
+
+
 class ApproximateMajorityMultipleVisualiser extends AbstractAlgoVisualiser implements AlgoVisualiser {
   name = 'Multiple: Approximate Majority biological consensus (Bounded Gillespie)';
   description = ('Runs the "Approximate Majority biological consensus (Bounded Gillespie)" ' +
@@ -37,6 +44,8 @@ class ApproximateMajorityMultipleVisualiser extends AbstractAlgoVisualiser imple
   // The first dimension represents the iterations axis
   // The third dimension represents the average value of A, B and C so far.
   private averageData: number[][];
+  private outcomeData: OutcomeData;
+
   private maxIterationsPerRun: number;
   private verticalGroups = 50;
   private averageDataConverter: (a: number) => {(b: number[], c: number): [number, number]}
@@ -69,6 +78,10 @@ class ApproximateMajorityMultipleVisualiser extends AbstractAlgoVisualiser imple
       {
         key: 'Number of runs',
         value: this.runsToComplete,
+      },
+      {
+        key: 'Max iterations per runs',
+        value: this.maxIterationsPerRun,
       },
     ]
   }
@@ -104,38 +117,52 @@ class ApproximateMajorityMultipleVisualiser extends AbstractAlgoVisualiser imple
       this.averageData.push([0,0,0]);
       x += 1;
     }
+    this.outcomeData = {correct: 0, incorrect: 0, incomplete: 0};
   }
 
   private setupGraph(): void {
-    var margin = {top: 20, right: 20, bottom: 20, left: 30};
+    var margin = {top: 20, right: 20, bottom: 70, left: 50};
     var graphWidth = this.size - margin.left - margin.right;
     var graphHeight = this.size - margin.top - margin.bottom;
 
     var x = d3.scale.linear().range([0, graphWidth]).domain([0, this.maxIterationsPerRun]).nice();
     var y = d3.scale.linear().range([0, graphHeight]).domain([this.algo.maxEntities, 0]).nice();
 
-    var xAxis = d3.svg.axis().scale(x).tickSize(-graphHeight);
+    var xAxis = d3.svg.axis().scale(x);//.tickSize(-graphHeight);
     var yAxis = d3.svg.axis().scale(y).orient('left');
 
     var svg = d3.select('svg').append('g').attr('class', 'graph');
     // Add the x-axis
     svg.append('g')
         .attr('class', 'x axis')
-        .attr('transform', `translate(${margin.left},${graphHeight+margin.top})`)
+        .attr('transform', `translate(${margin.left},${graphHeight + margin.top})`)
         .call(xAxis);
+    svg.append('text')
+        .attr('class', 'axis label')
+        .attr('transform', `translate(${margin.left + 40},${graphHeight + margin.top + 40})`)
+        .text('Iteration number (of Approximate Majority algorithm)');
 
     // Add the y-axis
     svg.append('g')
         .attr('class', 'y axis')
         .attr('transform', `translate(${margin.left},${margin.top})`)
         .call(yAxis);
+    svg.append('text')
+        .attr('class', 'axis label')
+        .attr('transform', `translate(${20},${margin.top + graphHeight/1.6})rotate(-90)`)
+        .text('Average entity number');
 
     // Add the line paths
     this.algo.entities.forEach((entity, index) => {
-      d3.select('.graph').append('path')
+      svg.append('path')
           .attr('class', `line entity_line_${index} entity_line_${entity.name}`)
           .attr('transform', `translate(${margin.left},${margin.top})`);
     });
+
+    // Add percentage correct
+    svg.append('text')
+        .attr('class', 'text outcome')
+        .attr('transform', `translate(${margin.left},${margin.top + graphHeight + margin.bottom - 10})`);
 
     // Calculate scaling factors for data
     var xScalingFactor = (graphWidth / this.maxIterationsPerRun);
@@ -146,6 +173,7 @@ class ApproximateMajorityMultipleVisualiser extends AbstractAlgoVisualiser imple
   }
 
   private updateGraph(): void {
+    // Update lines
     var lineGraph = d3.svg.line()
         .x((d) => d[0])
         .y((d) => d[1])
@@ -155,6 +183,11 @@ class ApproximateMajorityMultipleVisualiser extends AbstractAlgoVisualiser imple
       var data = <[number, number][]> _.map(this.averageData, this.averageDataConverter(index));
       d3.select(`.entity_line_${index}`).attr('d', lineGraph(data))
     });
+
+    // Update % correct
+    var total = _.values(this.outcomeData).reduce((memo, c) => memo + c, 0);
+    var percent = (n: number) => ((n / total) * 100).toPrecision(3)
+    d3.select(`.text.outcome`).text(`${percent(this.outcomeData.correct)}% Correct  ${percent(this.outcomeData.incorrect)}% Incorrect  ${percent(this.outcomeData.incomplete)}% Incomplete`);
   }
 
   private updateData(iteration: number) {
@@ -171,13 +204,20 @@ class ApproximateMajorityMultipleVisualiser extends AbstractAlgoVisualiser imple
     this.updateData(0);  // Set the initial values
     while(runsToComplete > 0) {
       var iteration = 1;
-      var result = {finished: false};
+      var result = {finished: false, correct: false};
       while(iteration < (this.maxIterationsPerRun + 1)) {
         if(!result.finished) {
           result = this.algo.iterate({});
         }
         this.updateData(iteration);
         iteration += 1;
+      }
+      if(result.correct) {
+        this.outcomeData.correct += 1;
+      } else if(result.correct === false) {
+        this.outcomeData.incorrect += 1;
+      } else {
+        this.outcomeData.incomplete += 1;
       }
       this.setupNewAlgo();
       runsToComplete -= 1;
@@ -196,7 +236,7 @@ class ApproximateMajorityMultipleVisualiser extends AbstractAlgoVisualiser imple
   }
 
   protected _visualClearup() {
-    // pass
+    d3.select('.graph').remove();
   }
 }
 

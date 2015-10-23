@@ -1,3 +1,7 @@
+body {
+  font-family: sans-serif;
+}
+
 .space .group .point_circle {
 	stroke: rgb(0, 0, 0);
 	stroke-width: 2px;
@@ -7,6 +11,7 @@
 	stroke: rgb(221, 0, 51);
 }
 
+/* +Group, point and graph colours */
 .group0 {
 	fill: rgba(51, 0, 221, 0.5);
   background-color: rgba(51, 0, 221, 0.5);
@@ -30,9 +35,13 @@ path.line.entity_line_1 {
 path.line.entity_line_2 {
   stroke: rgba(160, 1, 50, 0.5);
 }
+/* -Group, point and graph colours */
+
 
 .space g text {
-	stroke: rgb(0, 0, 0);
+	stroke: rgb(70, 70, 70);
+  font-family: sans-serif;
+  font-weight: 100;
 }
 
 
@@ -54,26 +63,20 @@ path.line.entity_line_2 {
 	background-color: rgb(250, 0, 0);
 }
 
-/* Graphs */
+/* +Graphs */
 path.line {
   fill: none;
   stroke: #666;
   stroke-width: 1.5px;
 }
 
-.x.axis line {
-  stroke: #fff;
-}
-
 .x.axis .minor {
   stroke-opacity: .5;
 }
 
-.x.axis path {
-  display: none;
-}
-
-.y.axis line, .y.axis path {
+.axis line, .axis path {
   fill: none;
   stroke: #000;
 }
+/* -Graphs */
+
