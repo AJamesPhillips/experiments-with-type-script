@@ -1,7 +1,6 @@
 /// <reference path="../../typings/tsd.d.ts" />
 
 import {IsDrawable} from '../data_visual/coord';
-import {Group} from '../data_visual/group';
 
 
 var translatePoint = function(point: IsDrawable): string {

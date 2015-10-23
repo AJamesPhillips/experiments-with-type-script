@@ -1,7 +1,6 @@
 import {
   Entity,
   Reaction,
-  ReactionEvent,
   ReactedEntityChange,
 } from '../algo/biochem/utils';
 import {

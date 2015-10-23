@@ -15,6 +15,8 @@ class Coord implements PointInterface {
   y: number;
 
   constructor(x: number, y: number) {
+    isPositiveInteger(x, true);
+    isPositiveInteger(y, true);
     this.x = x;
     this.y = y;
   }

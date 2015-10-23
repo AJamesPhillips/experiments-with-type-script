@@ -11,10 +11,6 @@ import {
   fullRestart,
 } from './algo_visual';
 import {
-  Entity,
-  Reaction,
-} from '../algo/biochem/utils';
-import {
   EntityUI,
   ReactionUI,
 } from '../data_visual/bio';

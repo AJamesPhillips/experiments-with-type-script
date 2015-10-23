@@ -2,7 +2,7 @@
 
 ## Development
 
-### Dependcies
+### Dependencies
 
     $ npm install -g typescript
 

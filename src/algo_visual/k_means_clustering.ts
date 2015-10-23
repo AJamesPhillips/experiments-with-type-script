@@ -1,9 +1,4 @@
-import {
-  IterationResult,
-} from '../algo/algorithm';
-import {
-  KMeans,
-} from '../algo/k_means_clustering';
+import {KMeans} from '../algo/k_means_clustering';
 import {
   Parameters,
   AlgoVisualiser,

@@ -2,7 +2,6 @@ import {
   is0OrGreaterInteger,
 } from '../../utils/utils';
 import {
-  SubjectBase,
   EventResult,
 } from '../../utils/events';
 

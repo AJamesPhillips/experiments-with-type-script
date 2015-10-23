@@ -2,7 +2,6 @@ import {timings} from './timings';
 import {Drawing} from '../data_visual/canvas';
 import {Algorithm} from '../algo/algorithm';
 import {
-  Observer,
   SubjectBase,
   EventResult,
 } from '../utils/events';
