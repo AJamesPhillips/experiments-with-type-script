@@ -94,7 +94,7 @@ algoVisualisers.forEach((algoVisual, i) => {
   $('#algoSelect').append(`<option value="${i}">${algoVisual.name}</option>`);
 });
 $('#algoSelect')
-  .prop('selectedIndex', 1)
+  .prop('selectedIndex', 0)
   .on('change', (event: JQueryEventObject) => {
     var index = parseInt($(event.target).val(), 10);
     if(algoVisual) algoVisual.destroy();

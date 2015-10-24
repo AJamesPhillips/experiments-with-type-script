@@ -31,6 +31,7 @@ class ApproximateMajorityVisualiser extends AbstractAlgoVisualiser implements Al
   private entityUIs: EntityUI[];
   numberOfStartingA: number;
   numberOfStartingB: number;
+  numberOfStartingC: number;
   protected algo: ApproximateMajority;
   private reactionIdToUI: {[index: number]: ReactionUI} = {};
   private lastResult: GillespieIterationResult;
@@ -39,6 +40,7 @@ class ApproximateMajorityVisualiser extends AbstractAlgoVisualiser implements Al
     super(canvas, size, dataPointRadius);
     this.numberOfStartingA = numberOfStartingA;
     this.numberOfStartingB = numberOfStartingB;
+    this.numberOfStartingC = 0;
   }
 
   get parametersForHuman(): Parameters[] {
@@ -47,17 +49,25 @@ class ApproximateMajorityVisualiser extends AbstractAlgoVisualiser implements Al
         key: 'Number of chemical entity A',
         attribute: 'numberOfStartingA',
         parser: integer0OrMoreParser,
+        cssClass: 'group0',
       },
       {
         key: 'Number of chemical entity B',
         attribute: 'numberOfStartingB',
         parser: integer0OrMoreParser,
+        cssClass: 'group1',
+      },
+      {
+        key: 'Number of chemical entity C',
+        attribute: 'numberOfStartingC',
+        parser: integer0OrMoreParser,
+        cssClass: 'group2',
       },
     ]
   }
 
   protected _setup() {
-    var algo = new ApproximateMajority(this.numberOfStartingA, this.numberOfStartingB);
+    var algo = new ApproximateMajority(this.numberOfStartingA, this.numberOfStartingB, this.numberOfStartingC);
     this.algo = algo;
 
     // Set up the visualisation
@@ -127,7 +137,7 @@ class ApproximateMajorityVisualiser extends AbstractAlgoVisualiser implements Al
    */
   protected _iterate(): number {
     var animationDuration = this.animationDuration;
-    if(this.lastResult) {
+    if(this.lastResult && this.lastResult.reaction) {
       var lastResult = this.lastResult;
       var reactionUI = this.reactionIdToUI[lastResult.reaction.id];
       var availablePoints = reactionUI.removePoints(lastResult.reaction.lastReactionEvent.removals);
