@@ -224,7 +224,7 @@ class ApproximateMajorityMultipleVisualiser extends AbstractAlgoVisualiser imple
       this.runsCompleted += 1;
       this.updateGraph();
     }
-    return (runsLeft > 0) ? 200 : undefined;
+    return (runsLeft > 0) ? this.animationDuration : undefined;
   }
 
   protected _restart(): void {

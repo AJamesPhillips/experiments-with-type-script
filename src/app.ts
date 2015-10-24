@@ -93,13 +93,13 @@ $('#algoSelect')
 
 // Speed control UI set up
 $('#speedControl').on('input change', (event: JQueryEventObject) => {
-  var speed = (1 + parseInt($(event.target).val(), 10)) * 10;
+  var speed = (0 + parseInt($(event.target).val(), 10)) * 10;
   timings.setAnimationTime(speed);
   $('#speedOut').text(speed * 4);
   $('#speedControl').blur();  // lose focus
 });
 // set initial speed value
 $('#speedControl')
-  // .val('19')  // fast (800 ms between iterations)
-  .val('49')  // slow (2000 ms between iterations)
+  // .val('20')  // fast (800 ms between iterations)
+  .val('50')  // slow (2000 ms between iterations)
   .trigger('change');
