@@ -24,6 +24,7 @@ interface Parameters {
 interface AlgoVisualiser extends SubjectBase {
   name: string;
   description: string;
+  className: string;
   parametersForHuman: Parameters[];
   getParameter: (parameter: string) => number;
   setParameter: (parameter: string, value: number) => void;

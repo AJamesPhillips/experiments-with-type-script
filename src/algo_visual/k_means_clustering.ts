@@ -17,6 +17,7 @@ import {
 
 
 class KMeansVisualiser extends AbstractAlgoVisualiser implements AlgoVisualiser {
+  className = 'kmeans';
   name = 'K Means clustering';
   description = ('Clusters points into groups based on the closest group mean to it.  K means is ' +
     'a heuristic algorithm, it can not guarantee the final group positions represent the "best" ' +

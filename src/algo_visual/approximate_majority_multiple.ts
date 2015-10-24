@@ -29,6 +29,7 @@ interface OutcomeData {
 
 
 class ApproximateMajorityMultipleVisualiser extends AbstractAlgoVisualiser implements AlgoVisualiser {
+  className = 'approxMajorityMultiple';
   name = 'Multiple: Approximate Majority biological consensus (Bounded Gillespie)';
   description = ('Runs the "Approximate Majority biological consensus (Bounded Gillespie)" ' +
     'algorithm multiple times and graphs the results.');

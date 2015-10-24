@@ -13,19 +13,49 @@ import {capitalizeFirstLetter} from './utils/utils';
 import {isNumber} from './utils/utils';
 
 
+var algoNumber = 0;
 var size = 500;
 var dataPointRadius = 10;
+var animationSpeed = '50';  // 50 is slow (2000 ms between iterations), 20 is fast (800 ms between iterations)
 
 var canvas = makeSvgDrawArea(size);
 
 var algoVisualisers: AlgoVisualiser[] = [];
 var algoVisual: AlgoVisualiser;
-var approximateMajority = new ApproximateMajorityVisualiser(canvas, size, dataPointRadius);
-algoVisualisers.push(approximateMajority);
-var multipleApproximateMajority = new ApproximateMajorityMultipleVisualiser(canvas, size, dataPointRadius);
-algoVisualisers.push(multipleApproximateMajority);
-var kMeans = new KMeansVisualiser(canvas, size, dataPointRadius);
-algoVisualisers.push(kMeans);
+var algoVisualisersClasses = [
+  ApproximateMajorityVisualiser,
+  ApproximateMajorityMultipleVisualiser,
+  KMeansVisualiser,
+];
+var algoVisualisersMap: {[index: string]: number} = {};
+algoVisualisersClasses.forEach((Klass) => {
+  var algoVis = new Klass(canvas, size, dataPointRadius);
+  algoVisualisersMap[algoVis.className] = algoVisualisers.length;
+  algoVisualisers.push(algoVis);
+})
+
+
+// Parse the url hash to extract desired algo, its parameters and other values
+var hash = document.location.hash.slice(1).split('&');
+
+hash.forEach((part: string) => {
+  var [key, value] = part.split('=');
+  if(key === 'algo') {
+    algoNumber = isNumber(algoVisualisersMap[value]) ? algoVisualisersMap[value] : algoNumber;
+  } else if(key === 'animationSpeed') {
+    animationSpeed = value;
+  } else {
+    algoVisual = algoVisualisers[algoNumber];
+    var matchingParam = algoVisual.parametersForHuman.filter((param) => param.attribute === key);
+    if(matchingParam.length === 1) {
+      var param = matchingParam[0];
+      algoVisual.setParameter(key, param.parser(value));
+    } else {
+      // log it as an error and drop it
+      console.error(`Unknown parameter: ${key} with value: ${value} for AlgoVisualiser: ${algoVisual.className}`)
+    }
+  }
+})
 
 
 // Handle keyboard commands
@@ -88,7 +118,7 @@ algoVisualisers.forEach((algoVisual, i) => {
   $('#algoSelect').append(`<option value="${i}">${algoVisual.name}</option>`);
 });
 $('#algoSelect')
-  .prop('selectedIndex', 0)
+  .prop('selectedIndex', algoNumber)
   .on('change', (event: JQueryEventObject) => {
     var index = parseInt($(event.target).val(), 10);
     if(algoVisual) algoVisual.destroy();
@@ -114,6 +144,5 @@ $('#speedControl').on('input change', (event: JQueryEventObject) => {
 });
 // set initial speed value
 $('#speedControl')
-  // .val('20')  // fast (800 ms between iterations)
-  .val('50')  // slow (2000 ms between iterations)
+  .val(animationSpeed)
   .trigger('change');

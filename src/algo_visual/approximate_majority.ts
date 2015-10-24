@@ -21,6 +21,7 @@ import {
 
 
 class ApproximateMajorityVisualiser extends AbstractAlgoVisualiser implements AlgoVisualiser {
+  className = 'approxMajoritySingle';
   name = 'Approximate Majority biological consensus (Bounded Gillespie)';
   description = ('Simulates how biology might find which chemical entity is in the ' +
     'majority.  It uses three reactions between entities A, B and C which results in ' +
