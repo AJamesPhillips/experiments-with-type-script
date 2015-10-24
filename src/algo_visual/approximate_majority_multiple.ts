@@ -33,10 +33,11 @@ class ApproximateMajorityMultipleVisualiser extends AbstractAlgoVisualiser imple
   description = ('Runs the "Approximate Majority biological consensus (Bounded Gillespie)" ' +
     'algorithm multiple times and graphs the results.');
 
-  numberOfStartingA: number;
-  numberOfStartingB: number;
-  numberOfStartingC: number;
-  runsToComplete: number;
+  numberOfStartingA: number = 30;
+  numberOfStartingB: number = 28;
+  numberOfStartingC: number = 0;
+  runsToComplete: number = 250;
+  maxIterationsPerRun: number = 500;
   protected algo: ApproximateMajority;
   private runsPerIterationGroup = 10;
   private runsCompleted: number;
@@ -51,18 +52,8 @@ class ApproximateMajorityMultipleVisualiser extends AbstractAlgoVisualiser imple
   private averageData: number[][];
   private outcomeData: OutcomeData;
 
-  private maxIterationsPerRun: number;
   private verticalGroups = 50;
   private averageDataConverter: (a: number) => {(b: number[], c: number): [number, number]}
-
-  constructor(canvas: Drawing, size: number, dataPointRadius: number, numberOfStartingA: number, numberOfStartingB: number, runsToComplete: number, maxIterationsPerRun: number) {
-    super(canvas, size, dataPointRadius);
-    this.numberOfStartingA = numberOfStartingA;
-    this.numberOfStartingB = numberOfStartingB;
-    this.numberOfStartingC = 0;
-    this.runsToComplete = runsToComplete;
-    this.maxIterationsPerRun = maxIterationsPerRun;
-  }
 
   get parametersForHuman(): Parameters[] {
     return [
@@ -195,10 +186,10 @@ class ApproximateMajorityMultipleVisualiser extends AbstractAlgoVisualiser imple
       d3.select(`.entity_line_${index}`).attr('d', lineGraph(data))
     });
 
-    // Update % correct
+    // Update % correct and run number
     var total = _.values(this.outcomeData).reduce((memo, c) => memo + c, 0);
     var percent = (n: number) => ((n / total) * 100).toPrecision(3)
-    d3.select(`.text.outcome`).text(`${percent(this.outcomeData.correct)}% Correct  ${percent(this.outcomeData.incorrect)}% Incorrect  ${percent(this.outcomeData.incomplete)}% Incomplete`);
+    d3.select(`.text.outcome`).text(`${percent(this.outcomeData.correct)}% Correct  ${percent(this.outcomeData.incorrect)}% Incorrect  ${percent(this.outcomeData.incomplete)}% Incomplete.  Run: ${this.runsCompleted}`);
   }
 
   private updateData(iteration: number) {

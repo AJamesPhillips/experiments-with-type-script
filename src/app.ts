@@ -20,16 +20,10 @@ var canvas = makeSvgDrawArea(size);
 
 var algoVisualisers: AlgoVisualiser[] = [];
 var algoVisual: AlgoVisualiser;
-var numberOfStartingA = 30;
-var numberOfStartingB = 28;
-var approximateMajority = new ApproximateMajorityVisualiser(canvas, size, dataPointRadius, numberOfStartingA, numberOfStartingB);
+var approximateMajority = new ApproximateMajorityVisualiser(canvas, size, dataPointRadius);
 algoVisualisers.push(approximateMajority);
-
-var runsToComplete = 250;
-var maxIterationsPerRun = 500;
-var multipleApproximateMajority = new ApproximateMajorityMultipleVisualiser(canvas, size, dataPointRadius, numberOfStartingA, numberOfStartingB, runsToComplete, maxIterationsPerRun);
+var multipleApproximateMajority = new ApproximateMajorityMultipleVisualiser(canvas, size, dataPointRadius);
 algoVisualisers.push(multipleApproximateMajority);
-
 var kMeans = new KMeansVisualiser(canvas, size, dataPointRadius);
 algoVisualisers.push(kMeans);
 

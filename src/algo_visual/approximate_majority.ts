@@ -29,19 +29,12 @@ class ApproximateMajorityVisualiser extends AbstractAlgoVisualiser implements Al
     'between the two starting populations of A and B increases.');
 
   private entityUIs: EntityUI[];
-  numberOfStartingA: number;
-  numberOfStartingB: number;
-  numberOfStartingC: number;
+  numberOfStartingA: number = 10;
+  numberOfStartingB: number = 5;
+  numberOfStartingC: number = 0;
   protected algo: ApproximateMajority;
   private reactionIdToUI: {[index: number]: ReactionUI} = {};
   private lastResult: GillespieIterationResult;
-
-  constructor(canvas: Drawing, size: number, dataPointRadius: number, numberOfStartingA: number, numberOfStartingB: number) {
-    super(canvas, size, dataPointRadius);
-    this.numberOfStartingA = numberOfStartingA;
-    this.numberOfStartingB = numberOfStartingB;
-    this.numberOfStartingC = 0;
-  }
 
   get parametersForHuman(): Parameters[] {
     return [
