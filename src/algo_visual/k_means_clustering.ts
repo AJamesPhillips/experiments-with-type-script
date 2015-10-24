@@ -129,7 +129,8 @@ class KMeansVisualiser extends AbstractAlgoVisualiser implements AlgoVisualiser 
   }
 
   protected _parameterChanged(parameter: string): void {
-    // pass
+    if(parameter === 'numberOfGroups') this.initialGroups = [];
+    if(parameter === 'numberOfDataPoints') this.initialPoints = [];
   }
 }
 
