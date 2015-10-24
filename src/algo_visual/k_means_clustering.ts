@@ -11,6 +11,9 @@ import {
 import {
   bounded,
 } from '../utils/random';
+import {
+  integer0OrMoreParser,
+} from '../utils/utils';
 
 
 class KMeansVisualiser extends AbstractAlgoVisualiser implements AlgoVisualiser {
@@ -31,11 +34,13 @@ class KMeansVisualiser extends AbstractAlgoVisualiser implements AlgoVisualiser 
     return [
       {
         key: 'Number of clusters',
-        value: this.numberOfGroups,
+        attribute: 'numberOfGroups',
+        parser: integer0OrMoreParser,
       },
       {
         key: 'Number of data points',
-        value: this.numberOfDataPoints,
+        attribute: 'numberOfDataPoints',
+        parser: integer0OrMoreParser,
       },
     ];
   }

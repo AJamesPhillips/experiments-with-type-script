@@ -10,6 +10,7 @@ import {ApproximateMajorityMultipleVisualiser} from './algo_visual/approximate_m
 import {KMeansVisualiser} from './algo_visual/k_means_clustering';
 import {timings} from './algo_visual/timings';
 import {capitalizeFirstLetter} from './utils/utils';
+import {isNumber} from './utils/utils';
 
 
 var size = 500;
@@ -68,6 +69,26 @@ var algoChangeStateObserver = {
 }
 
 
+var setupAlgoVisualParameters = (algoVisual: AlgoVisualiser) => {
+  var parameters = $('#parameters').html('');
+  algoVisual.parametersForHuman.forEach((param) => {
+    var value = algoVisual.getParameter(param.attribute);
+    var row = `<tr><td>${param.key}</td><td><input type="number" value="${value.toString()}"></td><td class="${param.cssClass}">&nbsp; &nbsp;</td></tr>`;
+    var $row = $(row);
+    parameters.append($row);
+    var $input = $row.find('input');
+    $input.change((event) => {
+      var newValue = param.parser($input.val());
+      if(newValue !== undefined) {
+        value = newValue;
+        algoVisual.setParameter(param.attribute, value);
+      }
+      $input.val(value.toString());
+    })
+  });
+}
+
+
 // Algorithm selection UI
 algoVisualisers.forEach((algoVisual, i) => {
   $('#algoSelect').append(`<option value="${i}">${algoVisual.name}</option>`);
@@ -78,13 +99,12 @@ $('#algoSelect')
     var index = parseInt($(event.target).val(), 10);
     if(algoVisual) algoVisual.destroy();
     algoVisual = algoVisualisers[index];
+
+    // Setup AlgoVisual and its UI
     algoVisual.setup();
     algoVisual.addObserver(algoChangeStateObserver);
     $('#description').text(algoVisual.description);
-    var parameters = algoVisual.parametersForHuman.map((param) => {
-      return `<tr><td>${param.key}</td><td>${param.value.toString()}</td><td class="${param.cssClass}">&nbsp; &nbsp;</td></tr>`;
-    }).join('');
-    $('#parameters').html(parameters);
+    setupAlgoVisualParameters(algoVisual);
     $('#algoSelect').blur();  // lose focus
   })
   // set initial value

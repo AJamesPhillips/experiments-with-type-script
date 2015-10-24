@@ -15,6 +15,10 @@ import {
   ReactionUI,
 } from '../data_visual/bio';
 import {Drawing} from '../data_visual/canvas';
+import {
+  integer0OrMoreParser,
+  integerPositiveParser,
+} from '../utils/utils';
 
 
 interface OutcomeData {
@@ -31,6 +35,7 @@ class ApproximateMajorityMultipleVisualiser extends AbstractAlgoVisualiser imple
 
   numberOfStartingA: number;
   numberOfStartingB: number;
+  numberOfStartingC: number;
   runsToComplete: number;
   protected algo: ApproximateMajority;
   private runsPerIterationGroup = 10;
@@ -54,6 +59,7 @@ class ApproximateMajorityMultipleVisualiser extends AbstractAlgoVisualiser imple
     super(canvas, size, dataPointRadius);
     this.numberOfStartingA = numberOfStartingA;
     this.numberOfStartingB = numberOfStartingB;
+    this.numberOfStartingC = 0;
     this.runsToComplete = runsToComplete;
     this.maxIterationsPerRun = maxIterationsPerRun;
   }
@@ -62,26 +68,31 @@ class ApproximateMajorityMultipleVisualiser extends AbstractAlgoVisualiser imple
     return [
       {
         key: 'Number of chemical entity A',
-        value: this.numberOfStartingA,
+        attribute: 'numberOfStartingA',
+        parser: integer0OrMoreParser,
         cssClass: 'group0',
       },
       {
         key: 'Number of chemical entity B',
-        value: this.numberOfStartingB,
+        attribute: 'numberOfStartingB',
+        parser: integer0OrMoreParser,
         cssClass: 'group1',
       },
       {
         key: 'Number of chemical entity C',
-        value: 0,
+        attribute: 'numberOfStartingC',
+        parser: integer0OrMoreParser,
         cssClass: 'group2',
       },
       {
         key: 'Number of runs',
-        value: this.runsToComplete,
+        attribute: 'runsToComplete',
+        parser: integerPositiveParser,
       },
       {
         key: 'Max iterations per runs',
-        value: this.maxIterationsPerRun,
+        attribute: 'maxIterationsPerRun',
+        parser: integerPositiveParser,
       },
     ]
   }
@@ -98,7 +109,7 @@ class ApproximateMajorityMultipleVisualiser extends AbstractAlgoVisualiser imple
 
   private setupNewAlgo() {
     if(this.algo) this.algo.destroy();
-    this.algo = new ApproximateMajority(this.numberOfStartingA, this.numberOfStartingB);
+    this.algo = new ApproximateMajority(this.numberOfStartingA, this.numberOfStartingB, this.numberOfStartingC);
   }
 
   private setupDataStore() {

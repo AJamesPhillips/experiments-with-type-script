@@ -5,7 +5,6 @@ import {
   SubjectBase,
   EventResult,
 } from '../utils/events';
-import {toStringInterface} from '../utils/utils';
 
 
 interface NewStatusEvent extends EventResult {
@@ -16,7 +15,8 @@ interface NewStatusEvent extends EventResult {
 
 interface Parameters {
   key: string;
-  value: toStringInterface;
+  attribute?: string;
+  parser: (value: string) => number;
   cssClass?: string;
 }
 
@@ -25,6 +25,8 @@ interface AlgoVisualiser extends SubjectBase {
   name: string;
   description: string;
   parametersForHuman: Parameters[];
+  getParameter: (parameter: string) => number;
+  setParameter: (parameter: string, value: number) => void;
   setup: () => boolean;
   run: () => boolean;
   stop: () => boolean;
@@ -49,6 +51,18 @@ class AbstractAlgoVisualiser extends SubjectBase {
     this.size = size;
     this.dataPointRadius = dataPointRadius;
     this.iterateHandler = this.iterateHandler.bind(this);
+  }
+
+  // This code smells
+  getParameter(parameter: string): number {
+    var ParameterAlgoVisual: {[idx: string]: number;} = <any>this;
+    return ParameterAlgoVisual[parameter];
+  }
+
+  // This code smells
+  setParameter(parameter: string, value: number): void {
+    var ParameterAlgoVisual: {[idx: string]: number;} = <any>this;
+    ParameterAlgoVisual[parameter] = value;
   }
 
   protected get animationDuration() {

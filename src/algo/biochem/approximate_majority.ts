@@ -34,15 +34,16 @@ class ApproximateMajority extends Algorithm {
   private _entities: Entity[];
   numberOfStartingA: number;
   numberOfStartingB: number;
-  numberOfStartingC: number = 0;
+  numberOfStartingC: number;
   reactionRate: number = 1e-5;
 
   private gillespie: BoundedGillespie;
 
-  constructor(numberOfStartingA: number, numberOfStartingB: number) {
+  constructor(numberOfStartingA: number, numberOfStartingB: number, numberOfStartingC: number = 0) {
     super();
     this.numberOfStartingA = numberOfStartingA;
     this.numberOfStartingB = numberOfStartingB;
+    this.numberOfStartingC = numberOfStartingC;
 
     // Set up entities and reaction network for a Biological consensus Algorithm
     this.entityA = new Entity('A', this.numberOfStartingA);

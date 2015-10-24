@@ -15,6 +15,9 @@ import {
   ReactionUI,
 } from '../data_visual/bio';
 import {Drawing} from '../data_visual/canvas';
+import {
+  integer0OrMoreParser,
+} from '../utils/utils';
 
 
 class ApproximateMajorityVisualiser extends AbstractAlgoVisualiser implements AlgoVisualiser {
@@ -42,11 +45,13 @@ class ApproximateMajorityVisualiser extends AbstractAlgoVisualiser implements Al
     return [
       {
         key: 'Number of chemical entity A',
-        value: this.numberOfStartingA,
+        attribute: 'numberOfStartingA',
+        parser: integer0OrMoreParser,
       },
       {
         key: 'Number of chemical entity B',
-        value: this.numberOfStartingB,
+        attribute: 'numberOfStartingB',
+        parser: integer0OrMoreParser,
       },
     ]
   }
