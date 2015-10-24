@@ -19,23 +19,27 @@ import {
 class KMeansVisualiser extends AbstractAlgoVisualiser implements AlgoVisualiser {
   name = 'K Means clustering';
   description = ('Clusters points into groups based on the closest group mean to it.  K means is ' +
-    'a heuristic algorithm, it can not guarentee the final group positions represent the "best" ' +
+    'a heuristic algorithm, it can not guarantee the final group positions represent the "best" ' +
     'clustering, i.e. the mean distance between all points and their group is the lowest.  ' +
-    'Is N-dimensional but this simple implementation does not support weighting along particular dimensions.');
-  numberOfGroups: number = 3;
-  numberOfDataPoints: number = 30;
+    'K-means is N-dimensional.  This simple implementation does not support weighting along particular dimensions.');
+  private numberOfGroups: number = 3;
+  private numberOfDataPoints: number = 30;
 
-  groups: GroupWithMean[] = [];
-  points: AssignedPoint[] = [];
-  initialGroups: GroupWithMean[] = [];
-  initialPoints: AssignedPoint[] = [];
+  private groups: GroupWithMean[] = [];
+  private points: AssignedPoint[] = [];
+  private initialGroups: GroupWithMean[] = [];
+  private initialPoints: AssignedPoint[] = [];
 
   get parametersForHuman(): Parameters[] {
+    var max5 = (val: string): number => {
+      var value = integer0OrMoreParser(val);
+      return (value !== undefined && value <= 5) ? value : undefined;
+    }
     return [
       {
         key: 'Number of clusters',
         attribute: 'numberOfGroups',
-        parser: integer0OrMoreParser,
+        parser: max5,
       },
       {
         key: 'Number of data points',
@@ -122,6 +126,10 @@ class KMeansVisualiser extends AbstractAlgoVisualiser implements AlgoVisualiser 
 
   protected _visualClearup(): void {
     this.canvas.removePoints('.group');
+  }
+
+  protected _parameterChanged(parameter: string): void {
+    // pass
   }
 }
 

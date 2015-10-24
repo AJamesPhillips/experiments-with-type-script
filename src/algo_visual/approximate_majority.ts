@@ -27,11 +27,11 @@ class ApproximateMajorityVisualiser extends AbstractAlgoVisualiser implements Al
     'either A or B being left as the only entity.  This is an approximate method ' +
     'whose probabilty of producing the correct answer will increase as the difference ' +
     'between the two starting populations of A and B increases.');
+  private numberOfStartingA: number = 10;
+  private numberOfStartingB: number = 5;
+  private numberOfStartingC: number = 0;
 
   private entityUIs: EntityUI[];
-  numberOfStartingA: number = 10;
-  numberOfStartingB: number = 5;
-  numberOfStartingC: number = 0;
   protected algo: ApproximateMajority;
   private reactionIdToUI: {[index: number]: ReactionUI} = {};
   private lastResult: GillespieIterationResult;
@@ -163,6 +163,10 @@ class ApproximateMajorityVisualiser extends AbstractAlgoVisualiser implements Al
   }
 
   protected _visualClearup() {
+    // pass
+  }
+
+  protected _parameterChanged(parameter: string): void {
     // pass
   }
 }

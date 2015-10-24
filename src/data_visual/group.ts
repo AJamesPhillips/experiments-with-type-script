@@ -37,7 +37,7 @@ class Group {
   }
 
   get cssClass(): string {
-    return `${this._groupCssClass} ${this._groupCssClass}${this.id}`;
+    return `${this._groupCssClass} ${this._groupCssClass}_${this.id}`;
   };
 
   get label(): string {

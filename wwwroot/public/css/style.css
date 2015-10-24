@@ -12,15 +12,15 @@ body {
 }
 
 /* +Group, point and graph colours */
-.group0 {
-	fill: rgba(51, 0, 221, 0.5);
-  background-color: rgba(51, 0, 221, 0.5);
+.group_0 {
+	fill: rgba(10, 20, 221, 0.5);
+  background-color: rgba(10, 20, 221, 0.5);
 }
 path.line.entity_line_0 {
-  stroke: rgba(51, 0, 221, 0.5);
+  stroke: rgba(10, 20, 221, 0.5);
 }
 
-.group1 {
+.group_1 {
 	fill: rgba(0, 181, 51, 0.5);
   background-color: rgba(0, 181, 51, 0.5);
 }
@@ -28,12 +28,28 @@ path.line.entity_line_1 {
   stroke: rgba(0, 181, 51, 0.5);
 }
 
-.group2 {
-	fill: rgba(160, 1, 50, 0.5);
-  background-color: rgba(160, 1, 50, 0.5);
+.group_2 {
+	fill: rgba(160, 10, 10, 0.5);
+  background-color: rgba(160, 10, 10, 0.5);
 }
 path.line.entity_line_2 {
-  stroke: rgba(160, 1, 50, 0.5);
+  stroke: rgba(160, 10, 10, 0.5);
+}
+
+.group_3 {
+	fill: rgba(190, 180, 0, 0.5);
+  background-color: rgba(190, 180, 0, 0.5);
+}
+path.line.entity_line_3 {
+  stroke: rgba(190, 180, 0, 0.5);
+}
+
+.group_4 {
+	fill: rgba(150, 1, 180, 0.5);
+  background-color: rgba(150, 1, 180, 0.5);
+}
+path.line.entity_line_4 {
+  stroke: rgba(150, 1, 180, 0.5);
 }
 /* -Group, point and graph colours */
 

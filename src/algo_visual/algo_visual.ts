@@ -63,6 +63,7 @@ class AbstractAlgoVisualiser extends SubjectBase {
   setParameter(parameter: string, value: number): void {
     var ParameterAlgoVisual: {[idx: string]: number;} = <any>this;
     ParameterAlgoVisual[parameter] = value;
+    this._parameterChanged(parameter);
   }
 
   protected get animationDuration() {
@@ -123,7 +124,7 @@ class AbstractAlgoVisualiser extends SubjectBase {
   }
 
   restart(): boolean {
-    if(!this.algo || !this.running) return false;
+    if(!this.algo) return false;
     this.stop();
     this._restart();
     return true;
@@ -165,6 +166,10 @@ class AbstractAlgoVisualiser extends SubjectBase {
 
   protected _visualClearup(): void {
     throw new Error('Subclasses must implement "_visualClearup"');
+  }
+
+  protected _parameterChanged(parameter: string): void {
+    throw new Error('Subclasses must implement "_parameterChanged"');
   }
 }
 

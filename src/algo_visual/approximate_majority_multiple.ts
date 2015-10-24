@@ -32,12 +32,12 @@ class ApproximateMajorityMultipleVisualiser extends AbstractAlgoVisualiser imple
   name = 'Multiple: Approximate Majority biological consensus (Bounded Gillespie)';
   description = ('Runs the "Approximate Majority biological consensus (Bounded Gillespie)" ' +
     'algorithm multiple times and graphs the results.');
+  private numberOfStartingA: number = 30;
+  private numberOfStartingB: number = 28;
+  private numberOfStartingC: number = 0;
+  private runsToComplete: number = 250;
+  private maxIterationsPerRun: number = 500;
 
-  numberOfStartingA: number = 30;
-  numberOfStartingB: number = 28;
-  numberOfStartingC: number = 0;
-  runsToComplete: number = 250;
-  maxIterationsPerRun: number = 500;
   protected algo: ApproximateMajority;
   private runsPerIterationGroup = 10;
   private runsCompleted: number;
@@ -239,6 +239,10 @@ class ApproximateMajorityMultipleVisualiser extends AbstractAlgoVisualiser imple
 
   protected _visualClearup() {
     d3.select('.graph').remove();
+  }
+
+  protected _parameterChanged(parameter: string): void {
+    // pass
   }
 }
 
