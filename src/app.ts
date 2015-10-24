@@ -36,7 +36,8 @@ algoVisualisersClasses.forEach((Klass) => {
 
 
 // Parse the url hash to extract desired algo, its parameters and other values
-var hash = document.location.hash.slice(1).split('&');
+var hashes = document.location.hash.slice(1).split('&');
+var hash = _.filter(hashes, (val): boolean => !!val.match('.+=.+') );
 
 hash.forEach((part: string) => {
   var [key, value] = part.split('=');
