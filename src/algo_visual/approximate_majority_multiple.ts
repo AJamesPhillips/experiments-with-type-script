@@ -62,19 +62,19 @@ class ApproximateMajorityMultipleVisualiser extends AbstractAlgoVisualiser imple
         key: 'Number of chemical entity A',
         attribute: 'numberOfStartingA',
         parser: integer0OrMoreParser,
-        cssClass: 'group0',
+        cssClass: 'group_0',
       },
       {
         key: 'Number of chemical entity B',
         attribute: 'numberOfStartingB',
         parser: integer0OrMoreParser,
-        cssClass: 'group1',
+        cssClass: 'group_1',
       },
       {
         key: 'Number of chemical entity C',
         attribute: 'numberOfStartingC',
         parser: integer0OrMoreParser,
-        cssClass: 'group2',
+        cssClass: 'group_2',
       },
       {
         key: 'Number of runs',
