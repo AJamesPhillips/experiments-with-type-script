@@ -9,7 +9,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "gulp": "^3.9.0",
-    "gulp-typescript": "^2.7.8"
+    "gulp": "3.9.1",
+    "gulp-typescript": "2.14.1",
+    "typescript": "1.6.2"
   }
 }
